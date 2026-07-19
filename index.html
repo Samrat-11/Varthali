@@ -245,6 +245,15 @@
         .student-details h4 { margin: 0; font-size: 1.05rem; color: #0B2545; font-weight: 700; }
         .student-details div { color: #64748b; font-size: 0.9rem; }
         .visa-badge { margin-left: auto; display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(16,185,129,0.08); color: #065f46; padding: 0 14px; height: 36px; border-radius: 9999px; font-size: 0.9rem; font-weight: 600; border: 1px solid rgba(16,185,129,0.12); white-space: nowrap; align-self: center; }
+
+        /* Make the tick icon inside visa badge a filled green circle with white check and vertically centered */
+        .visa-badge svg, .visa-badge i {
+            width: 18px; height: 18px; flex: 0 0 18px; display: inline-flex; align-items: center; justify-content: center;
+            border-radius: 999px; padding: 2px; box-sizing: content-box;
+        }
+        .visa-badge svg { background: #10B981; color: #fff; stroke: #fff; fill: #10B981; }
+        .visa-badge svg path, .visa-badge svg circle { stroke: #fff !important; fill: none; }
+        .visa-badge svg circle { fill: #10B981 !important; }
         /* Controls centered; prev/next offset outside card */
         .controls-container { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 1.75rem; position: relative; }
         .nav-btn { background: #ffffff; border: 1px solid rgba(11,37,69,0.06); width: 52px; height: 52px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #0B2545; box-shadow: 0 8px 22px rgba(11,37,69,0.06); transition: all 0.18s ease; }
@@ -258,6 +267,40 @@
         .dot.active { background: linear-gradient(90deg,#0f766e,#0369a1); width: 40px; height: 10px; border-radius: 999px; }
         .dot:focus{ box-shadow:0 0 0 4px rgba(3,105,161,0.12); transform:scale(1.03) }
         @media(min-width:900px){ .testimonial-card{ flex:0 0 60%; } .nav-left{ left: calc(50% - 520px); } .nav-right{ right: calc(50% - 520px); } }
+        /* Mobile overrides: keep nav buttons compact and inline to avoid large side offsets */
+        @media (max-width: 640px) {
+            .controls-container { gap: 0.5rem; padding: 0.25rem 0; }
+            .nav-left, .nav-right { position: static; right: auto; left: auto; top: auto; transform: none; }
+            .nav-btn { width: 44px; height: 44px; border-radius: 10px; padding: 6px; }
+            .nav-btn .nav-icon { width: 16px; height: 16px; }
+            .dots { gap: 0.5rem; }
+        }
+
+        /* Additional mobile alignment: avatar left, details right, badge under details */
+        @media (max-width: 640px) {
+            .student-info { display: flex; align-items: flex-start; gap: 0.75rem; }
+            .student-photo { width: 48px; height: 48px; flex: 0 0 auto; margin-right: 0; }
+            .student-details { flex: 1 1 auto; min-width: 0; }
+            .student-details h4 { margin: 0 0 4px 0; }
+            .student-details div { margin: 0; }
+            .visa-badge { display: inline-flex; margin-left: calc(48px + 0.75rem); margin-top: 8px; align-self: flex-start; }
+        }
+
+        /* Mobile testimonial adjustments for proper alignment */
+        @media (max-width: 640px) {
+            .testimonial-card { padding: 0 0.5rem; }
+            .test-panel { padding: 1rem 1rem 1.25rem; }
+            .quote-icon { left: 12px; top: 12px; width: 36px; height: 36px; }
+            .review-text { font-size: 1rem; line-height: 1.5; margin-bottom: 0.5rem; padding-right: 0; }
+            .student-info { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+            .student-photo { width: 48px; height: 48px; border-radius: 9999px; }
+            .student-details { flex: 1 1 auto; min-width: 0; }
+            .student-details h4 { margin-bottom: 2px; }
+            .visa-badge { order: 3; margin-left: 0; margin-top: 6px; align-self: flex-start; height: 34px; padding: 0 12px; }
+            .tilt-wrapper { overflow: visible; }
+            .slider-viewport { padding-left: 0.5rem; padding-right: 0.5rem; }
+            .controls-container { margin-top: 0.75rem; }
+        }
         /* keep single-slide layout as designed */
     </style>
 </head>
