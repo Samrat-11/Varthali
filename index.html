@@ -285,26 +285,32 @@
         .visa-badge svg { background: #10B981; color: #fff; stroke: #fff; fill: #10B981; }
         .visa-badge svg path, .visa-badge svg circle { stroke: #fff !important; fill: none; }
         .visa-badge svg circle { fill: #10B981 !important; }
-        /* Controls centered; prev/next offset outside card */
-        .controls-container { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 1.75rem; position: relative; }
-        .nav-btn { background: #ffffff; border: 1px solid rgba(11,37,69,0.06); width: 52px; height: 52px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #0B2545; box-shadow: 0 8px 22px rgba(11,37,69,0.06); transition: all 0.18s ease; }
+        /* Controls below the slider: arrows inline with dots (image-2 style) */
+        .slider-viewport { position: relative; }
+        .controls-container { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 1.25rem; z-index: 30; }
+        .nav-btn { background: #ffffff; border: 1px solid rgba(11,37,69,0.06); width: 52px; height: 52px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; color: #0B2545; box-shadow: 0 8px 22px rgba(11,37,69,0.06); transition: transform 0.18s ease; position: static; }
         .nav-btn:hover { transform: translateY(-3px); }
         .nav-btn .nav-icon { display:block; width:20px; height:20px; color: currentColor; }
         .nav-btn:focus{ box-shadow:0 0 0 4px rgba(16,185,129,0.12); outline:none }
-        .nav-left { position: absolute; left: calc(50% - 520px); top: -10px; }
-        .nav-right { position: absolute; right: calc(50% - 520px); top: -10px; }
-        .dots { display: flex; gap: 0.6rem; align-items:center }
-        .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(15,23,42,0.08); cursor: pointer; transition: all 0.28s ease; }
-        .dot.active { background: linear-gradient(90deg,#0f766e,#0369a1); width: 40px; height: 10px; border-radius: 999px; }
+        .nav-left { order: 1; }
+        .nav-right { order: 3; }
+        .dots { display: flex; gap: 0.6rem; align-items:center; order: 2; position: relative; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(15,23,42,0.08); cursor: pointer; transition: all 0.28s ease; position: relative; }
+        .dot.active { background: #fff; width: 8px; height: 8px; }
+        /* active pill behind the active dot */
+        .dots .active-pill { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 56px; height: 12px; border-radius: 999px; background: linear-gradient(90deg,#0f776e,#0b8fb0); z-index: 0; transition: left 0.32s cubic-bezier(.2,.9,.3,1), width 0.3s ease, background 0.3s ease; pointer-events: none; }
+        .dot { z-index: 1; }
+        .dot.active { background: linear-gradient(90deg,#0f776e,#0b8fb0); width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 2px 8px rgba(2,6,23,0.08); }
         .dot:focus{ box-shadow:0 0 0 4px rgba(3,105,161,0.12); transform:scale(1.03) }
-        @media(min-width:900px){ .testimonial-card{ flex:0 0 60%; } .nav-left{ left: calc(50% - 520px); } .nav-right{ right: calc(50% - 520px); } }
+        @media(min-width:900px){ .testimonial-card{ flex:0 0 60%; } }
         /* Mobile overrides: keep nav buttons compact and inline to avoid large side offsets */
         @media (max-width: 640px) {
-            .controls-container { gap: 0.5rem; padding: 0.25rem 0; }
-            .nav-left, .nav-right { position: static; right: auto; left: auto; top: auto; transform: none; }
+            .controls-container { gap: 0.5rem; bottom: -38px; }
             .nav-btn { width: 44px; height: 44px; border-radius: 10px; padding: 6px; }
             .nav-btn .nav-icon { width: 16px; height: 16px; }
             .dots { gap: 0.5rem; }
+            .nav-left { left: 8px; }
+            .nav-right { right: 8px; }
         }
 
         /* Additional mobile alignment: avatar left, details right, badge under details */
@@ -802,19 +808,21 @@
                 <p class="mt-3 text-gray-600">Trusted by thousands of students who achieved their global dreams.</p>
             </div>
             <div class="slider-viewport reveal mt-8">
-                <div class="slider-track" id="track">
-                    <!-- Injected via JS -->
+                    <div class="slider-track" id="track">
+                        <!-- Injected via JS -->
+                    </div>
+                    <div class="controls-container reveal" role="toolbar" aria-label="Testimonial navigation">
+                        <button class="nav-btn nav-left" id="prevBtn" aria-label="Previous testimonial">
+                            <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="false"><path d="M15 18l-6-6 6-6"/></svg>
+                        </button>
+                        <div class="dots" id="dotsContainer" aria-hidden="false">
+                            <div class="active-pill" aria-hidden="true"></div>
+                        </div>
+                        <button class="nav-btn nav-right" id="nextBtn" aria-label="Next testimonial">
+                            <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="false"><path d="M9 6l6 6-6 6"/></svg>
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div class="controls-container reveal" role="toolbar" aria-label="Testimonial navigation">
-                <button class="nav-btn nav-left" id="prevBtn" aria-label="Previous testimonial">
-                    <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="false"><path d="M15 18l-6-6 6-6"/></svg>
-                </button>
-                <div class="dots" id="dotsContainer" aria-hidden="false"></div>
-                <button class="nav-btn nav-right" id="nextBtn" aria-label="Next testimonial">
-                    <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="false"><path d="M9 6l6 6-6 6"/></svg>
-                </button>
-            </div>
         </div>
     </section>
 
@@ -1376,6 +1384,22 @@
                     }
                 document.querySelectorAll('.testimonial-card').forEach((card, idx) => idx === currentIndex ? card.classList.add('active') : card.classList.remove('active'));
                 document.querySelectorAll('.dot').forEach((dot, idx) => idx === currentIndex ? dot.classList.add('active') : dot.classList.remove('active'));
+                // position the active pill behind the currently active dot
+                try {
+                    const pill = dotsContainer.querySelector('.active-pill');
+                    const dotEls = Array.from(dotsContainer.querySelectorAll('.dot'));
+                    const activeIndex = Math.min(currentIndex, Math.max(0, dotEls.length - 1));
+                    const activeDot = dotEls[activeIndex];
+                    if (pill && activeDot) {
+                        const containerRect = dotsContainer.getBoundingClientRect();
+                        const dotRect = activeDot.getBoundingClientRect();
+                        // center X of the dot relative to the dots container
+                        const centerX = (dotRect.left - containerRect.left) + (dotRect.width / 2);
+                        pill.style.left = Math.max(6, Math.min(containerRect.width - 6, centerX)) + 'px';
+                        pill.style.top = '50%';
+                        pill.style.transform = 'translate(-50%, -50%)';
+                    }
+                } catch (e) { /* ignore if dotsContainer missing */ }
             }
 
             document.getElementById('nextBtn').addEventListener('click', () => { updateSlider(currentIndex === testimonials.length - 1 ? 0 : currentIndex + 1); resetAutoScroll(); });
