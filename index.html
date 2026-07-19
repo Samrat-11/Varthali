@@ -46,6 +46,7 @@
                 'user': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-3-3.87"/><path d="M4 21v-2a4 4 0 0 1 3-3.87"/><circle cx="12" cy="7" r="4"/></svg>',
                 'building': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V10l7-6 7 6v11"/><path d="M9 21V13h6v8"/></svg>',
                 'graduation-cap': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L1 7l11 5 9-4.09V17"/><path d="M1 7l11 5 9-4"/><path d="M12 22v-7"/></svg>',
+                'id': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
                 'shield-check': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l7 4v6c0 5-3.58 9.74-7 10-3.42-.26-7-5-7-10V6l7-4z"/><path d="M9.5 12.5l1.5 1.5 3-3"/></svg>',
                 'airplane': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 19.5L21 12 2.5 4.5 6 12l-3.5 7.5z"/></svg>',
                 'arrow-right': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>',
@@ -83,6 +84,36 @@
             else replaceIcons();
             // also run again after load to catch late DOM changes
             window.addEventListener('load', replaceIcons);
+        })();
+    </script>
+    <script>
+        // If counters didn't animate (some mobile browsers may not trigger IntersectionObserver immediately), force a fallback animation.
+        (function ensureCounters(){
+            function animateAllCounters(){
+                const counters = document.querySelectorAll('.counter');
+                counters.forEach(counter => {
+                    const target = parseInt(counter.getAttribute('data-target')) || 0;
+                    const duration = 2000;
+                    const start = Date.now();
+                    function step(){
+                        const elapsed = Date.now() - start;
+                        const progress = Math.min(elapsed / duration, 1);
+                        const current = Math.floor(target * progress);
+                        counter.textContent = current;
+                        if (progress < 1) requestAnimationFrame(step);
+                        else counter.textContent = target;
+                    }
+                    step();
+                });
+            }
+
+            // Try after DOM ready; if IntersectionObserver already animated, values won't be zero and we can skip.
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    const anyZero = Array.from(document.querySelectorAll('.counter')).some(c => c.textContent === '0' || c.textContent.trim() === '');
+                    if (anyZero) animateAllCounters();
+                }, 250);
+            });
         })();
     </script>
     
@@ -315,7 +346,7 @@
                         <img src="./img/logo.png" alt="Varthali Overseas Logo" class="w-full h-full object-cover" id="navLogo">
                     </div>
                     <span class="font-display font-bold text-xl text-navy tracking-tight group-hover:text-emerald transition-colors duration-300">
-                        Varthali <span class="font-light">Overseas</span>
+                        Varthali <span class="font-light">Overseas</span> Education <span class="font-light">Services</span>
                     </span>
                 </a>
 
@@ -806,7 +837,7 @@
                                 </div>
                                 <div>
                                     <h5 class="font-bold text-white mb-1">Office Address</h5>
-                                    <p class="text-sm text-gray-400">Zakeer Hussain Nagar, Near Vinayaka Temple Satyanara,<br>Nellore Andhra Pradesh 524002.</p>
+                                    <p class="text-sm text-gray-400">Zakeer Hussain Nagar, Near Vinayaka Temple,<br>Satyanarayana Puram, Nellore Andhra Pradesh 524002.</p>
                                 </div>
                             </div>
                             
@@ -901,16 +932,19 @@
                             <img src="./img/logo.png" alt="Varthali Overseas Logo" class="w-full h-full object-cover" id="footerLogo">
                         </div>
                         <span class="font-display font-bold text-xl text-white tracking-tight">
-                            Varthali <span class="font-light">Overseas</span>
+                            Varthali <span class="font-light">Overseas</span> Education<span class="font-light"> Services</span> 
                         </span>
                     </a>
                     <p class="text-gray-400 text-sm leading-relaxed mb-6">Empowering students to achieve their global education dreams through expert, transparent, and personalized consultancy.</p>
-                    <!-- <div class="flex gap-4">
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-emerald hover:text-white transition-colors"><i class="ph-fill ph-facebook-logo text-xl"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-emerald hover:text-white transition-colors"><i class="ph-fill ph-instagram-logo text-xl"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-emerald hover:text-white transition-colors"><i class="ph-fill ph-linkedin-logo text-xl"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-emerald hover:text-white transition-colors"><i class="ph-fill ph-youtube-logo text-xl"></i></a>
-                    </div> -->
+                    <div class="flex items-start gap-4">
+                                <div class="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                                    <i data-lucide="map-pin" class="text-xl text-emerald"></i>
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-white mb-1">Office Address</h5>
+                                    <p class="text-sm text-gray-400">Zakeer Hussain Nagar, Near Vinayaka Temple,<br>Satyanarayana Puram, Nellore Andhra Pradesh 524002.</p>
+                                </div>
+                            </div>
                 </div>
 
                 <!-- Quick Links -->
@@ -951,7 +985,7 @@
             </div>
 
             <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-center gap-4">
-                <p class="text-gray-500 text-sm">© 2023 Varthali Overseas. All rights reserved.</p>
+                <p class="text-gray-500 text-sm">© 2024 Varthali Overseas. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -1333,11 +1367,13 @@
                 currentIndex = index;
                 const cards = Array.from(track.querySelectorAll('.testimonial-card'));
                 const activeCard = cards[currentIndex];
-                if (activeCard) {
-                    // compute left offset of active card relative to track and translate by that amount
-                    const left = activeCard.offsetLeft - (track.clientWidth - activeCard.clientWidth) / 2;
-                    track.style.transform = `translateX(-${left}px)`;
-                }
+                    if (activeCard) {
+                        // compute left offset of active card relative to the viewport (slider container) and translate by that amount
+                        const viewport = track.parentElement || track.closest('.slider-viewport');
+                        const viewportWidth = viewport ? viewport.clientWidth : track.clientWidth;
+                        const left = activeCard.offsetLeft - (viewportWidth - activeCard.clientWidth) / 2;
+                        track.style.transform = `translateX(-${left}px)`;
+                    }
                 document.querySelectorAll('.testimonial-card').forEach((card, idx) => idx === currentIndex ? card.classList.add('active') : card.classList.remove('active'));
                 document.querySelectorAll('.dot').forEach((dot, idx) => idx === currentIndex ? dot.classList.add('active') : dot.classList.remove('active'));
             }
